@@ -1,3 +1,4 @@
+// imports
 import * as React from "react";
 import { styled, alpha } from "@mui/material/styles";
 import AppBar from "@mui/material/AppBar";
@@ -11,8 +12,9 @@ import MenuIcon from "@mui/icons-material/Menu";
 import Drawer from "@mui/material/Drawer";
 import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
 import MenuItem from "@mui/material/MenuItem";
+import Link from "@mui/material/Link";
 
-
+// styled toolbar component
 const StyledToolbar = styled(Toolbar)(({ theme }) => ({
   display: "flex",
   alignItems: "center",
@@ -29,7 +31,9 @@ const StyledToolbar = styled(Toolbar)(({ theme }) => ({
   padding: "8px 12px",
 }));
 
+// home component
 const Home = () => {
+  // state to manage the drawer's open/close state
   const [open, setOpen] = React.useState(false);
 
   const toggleDrawer = (newOpen) => () => {
@@ -47,13 +51,17 @@ const Home = () => {
       }}
     >
       <Container maxWidth="lg">
+        {/* styled toolbar component */}
         <StyledToolbar>
+          {/* main content area within the toolbar */}
           <Box
             sx={{ flexGrow: 1, display: "flex", alignItems: "center", px: 0 }}
           >
+            {/* home page title */}
             <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
               Welcome
             </Typography>
+            {/* desktop navigation buttons */}
             <Box
               sx={{
                 display: { xs: "none", md: "flex" },
@@ -64,10 +72,13 @@ const Home = () => {
               <Button color="inherit" variant="text" size="small">
                 Sign in
               </Button>
-              <Button color="primary" variant="contained" size="small">
-                Sign up
-              </Button>
+              <Link href="/SignUp">
+                <Button color="primary" variant="contained" size="small">
+                  Sign up
+                </Button>
+              </Link>
             </Box>
+            {/* Mobile navigation drawer */}
             <Box sx={{ display: { xs: "flex", md: "none" }, gap: 1 }}>
               <IconButton
                 size="large"
@@ -88,6 +99,7 @@ const Home = () => {
                   },
                 }}
               >
+                {/* Drawer content */}
                 <Box sx={{ p: 2, bgcolor: "white" }}>
                   <Box
                     sx={{
@@ -105,7 +117,10 @@ const Home = () => {
                   </Box>
                   <MenuItem>
                     <Button color="primary" variant="contained" fullWidth>
-                      Sign up
+                      <Link href="/SignUp" color="inherit" underline="none">
+                        {" "}
+                        Sign up{" "}
+                      </Link>
                     </Button>
                   </MenuItem>
                   <MenuItem>
