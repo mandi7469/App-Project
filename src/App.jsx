@@ -5,7 +5,7 @@ import backgroundVideo from "../src/assets/backgroundVideo.mp4";
 
 function App() {
   return (
-    <>
+    <div className="videoContainer">
       <video className="backgroundVideo" loop autoPlay muted>
         <source src={backgroundVideo} type="video/mp4" />
         Your browser does not support the video tag.
@@ -13,7 +13,7 @@ function App() {
       <main>
         <Outlet />
       </main>
-    </>
+    </div>
   );
 }
 

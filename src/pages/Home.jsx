@@ -41,6 +41,7 @@ const Home = () => {
   };
 
   return (
+    <div style={{ display: 'flex', minHeight: '100vh' }}>
     <AppBar
       position="fixed"
       sx={{
@@ -135,6 +136,7 @@ const Home = () => {
         </StyledToolbar>
       </Container>
     </AppBar>
+    </div>
   );
 };
 
