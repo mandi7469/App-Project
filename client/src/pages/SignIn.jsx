@@ -1,5 +1,7 @@
 import * as React from "react";
 import { useNavigate } from "react-router-dom";
+import { useState } from "react";
+import axios from "axios";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Checkbox from "@mui/material/Checkbox";
@@ -37,16 +39,14 @@ const Card = styled(MuiCard)(({ theme }) => ({
 
 export default function SignIn(props) {
   const navigate = useNavigate();
+  const [formData, setFormData] = useState({
+    email: "",
+    password: "",
+  });
 
   const handleHomeClick = () => {
     navigate("/");
   };
-
-  const [emailError, setEmailError] = React.useState(false);
-  const [emailErrorMessage, setEmailErrorMessage] = React.useState("");
-  const [passwordError, setPasswordError] = React.useState(false);
-  const [passwordErrorMessage, setPasswordErrorMessage] = React.useState("");
-  const [open, setOpen] = React.useState(false);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -56,17 +56,11 @@ export default function SignIn(props) {
     setOpen(false);
   };
 
-  const handleSubmit = (event) => {
-    if (emailError || passwordError) {
-      event.preventDefault();
-      return;
-    }
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get("email"),
-      password: data.get("password"),
-    });
-  };
+  const [emailError, setEmailError] = React.useState(false);
+  const [emailErrorMessage, setEmailErrorMessage] = React.useState("");
+  const [passwordError, setPasswordError] = React.useState(false);
+  const [passwordErrorMessage, setPasswordErrorMessage] = React.useState("");
+  const [open, setOpen] = React.useState(false);
 
   const validateInputs = () => {
     const email = document.getElementById("email");
@@ -76,7 +70,7 @@ export default function SignIn(props) {
 
     if (!email.value || !/\S+@\S+\.\S+/.test(email.value)) {
       setEmailError(true);
-      setEmailErrorMessage("Please enter a valid email address.");
+      setEmailErrorMessage("Email not found.");
       isValid = false;
     } else {
       setEmailError(false);
@@ -85,7 +79,7 @@ export default function SignIn(props) {
 
     if (!password.value || password.value.length < 6) {
       setPasswordError(true);
-      setPasswordErrorMessage("Password must be at least 6 characters long.");
+      setPasswordErrorMessage("Incorrect password.");
       isValid = false;
     } else {
       setPasswordError(false);
@@ -93,6 +87,29 @@ export default function SignIn(props) {
     }
 
     return isValid;
+  };
+
+  const handleInputChange = (event) => {
+    const { name, value } = event.target;
+    setFormData({ ...formData, [name]: value });
+  };
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    const { email, password } = formData;
+    try {
+      const { formData } = await axios.post("/signin", {
+        email,
+        password,
+      });
+      if (emailError || passwordError) {
+      } else {
+        setFormData({});
+        navigate("/Dashboard");
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -155,6 +172,8 @@ export default function SignIn(props) {
                   id="email"
                   type="email"
                   name="email"
+                  value={formData.email}
+                  onChange={handleInputChange}
                   placeholder="your@email.com"
                   autoComplete="email"
                   autoFocus
@@ -170,6 +189,8 @@ export default function SignIn(props) {
                   error={passwordError}
                   helperText={passwordErrorMessage}
                   name="password"
+                  value={formData.password}
+                  onChange={handleInputChange}
                   placeholder="••••••"
                   type="password"
                   id="password"

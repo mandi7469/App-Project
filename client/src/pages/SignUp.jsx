@@ -1,5 +1,7 @@
 import * as React from "react";
 import { useNavigate } from "react-router-dom";
+import { useState } from "react";
+import axios from "axios";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Container from "@mui/material/Container";
@@ -34,6 +36,11 @@ const Card = styled(MuiCard)(({ theme }) => ({
 
 export default function SignUp(props) {
   const navigate = useNavigate();
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    password: "",
+  });
 
   const handleHomeClick = () => {
     navigate("/");
@@ -83,18 +90,28 @@ export default function SignUp(props) {
     return isValid;
   };
 
-  const handleSubmit = (event) => {
-    if (nameError || emailError || passwordError) {
-      event.preventDefault();
-      return;
+  const handleInputChange = (event) => {
+    const { name, value } = event.target;
+    setFormData({ ...formData, [name]: value });
+  };
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    const { name, email, password } = formData;
+    try {
+      const { formData } = await axios.post("/signup", {
+        name,
+        email,
+        password,
+      });
+      if (nameError || emailError || passwordError) {
+      } else {
+        setFormData({});
+        navigate("/SignIn");
+      }
+    } catch (error) {
+      console.log(error);
     }
-    const data = new FormData(event.currentTarget);
-    console.log({
-      name: data.get("name"),
-      lastName: data.get("lastName"),
-      email: data.get("email"),
-      password: data.get("password"),
-    });
   };
 
   return (
@@ -144,10 +161,12 @@ export default function SignUp(props) {
               sx={{ display: "flex", flexDirection: "column", gap: 2 }}
             >
               <FormControl>
-                <FormLabel htmlFor="name">Full name</FormLabel>
+                <FormLabel htmlFor="name">Name</FormLabel>
                 <TextField
                   autoComplete="name"
                   name="name"
+                  value={formData.name}
+                  onChange={handleInputChange}
                   required
                   fullWidth
                   id="name"
@@ -165,6 +184,8 @@ export default function SignUp(props) {
                   id="email"
                   placeholder="your@email.com"
                   name="email"
+                  value={formData.email}
+                  onChange={handleInputChange}
                   autoComplete="email"
                   variant="outlined"
                   error={emailError}
@@ -178,6 +199,8 @@ export default function SignUp(props) {
                   required
                   fullWidth
                   name="password"
+                  value={formData.password}
+                  onChange={handleInputChange}
                   placeholder="••••••"
                   type="password"
                   id="password"
