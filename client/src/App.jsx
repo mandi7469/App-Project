@@ -1,7 +1,7 @@
 // imports
 import { Outlet } from "react-router-dom";
 import "./main.css";
-import backgroundVideo from "../src/assets/backgroundVideo.mp4";
+import backgroundVideo from "./assets/backgroundVideo.mp4";
 
 function App() {
   return (
