@@ -2,6 +2,11 @@
 import { Outlet } from "react-router-dom";
 import "./main.css";
 import backgroundVideo from "./assets/backgroundVideo.mp4";
+import axios from "axios";
+
+// configure axios defaults for all requests
+axios.defaults.baseURL = "http://localhost:8000";
+axios.defaults.withCredentials = true;
 
 function App() {
   return (

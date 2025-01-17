@@ -94,23 +94,28 @@ export default function SignIn(props) {
     setFormData({ ...formData, [name]: value });
   };
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-    const { email, password } = formData;
-    try {
-      const { formData } = await axios.post("/signin", {
-        email,
-        password,
-      });
-      if (emailError || passwordError) {
-      } else {
-        setFormData({});
-        navigate("/Dashboard");
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  const handleSubmit = (event) => {
+    event.preventDefault()
+    axios.get('/')
+  }
+
+  // const handleSubmit = async (event) => {
+  //   event.preventDefault();
+  //   const { email, password } = formData;
+  //   try {
+  //     const { formData } = await axios.post("/signin", {
+  //       email,
+  //       password,
+  //     });
+  //     if (emailError || passwordError) {
+  //     } else {
+  //       setFormData({});
+  //       navigate("/Dashboard");
+  //     }
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
 
   return (
     <div style={{ display: "flex", minHeight: "100vh" }}>

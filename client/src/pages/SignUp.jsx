@@ -87,6 +87,8 @@ export default function SignUp(props) {
       setNameErrorMessage("");
     }
 
+// if isValid registerUser
+
     return isValid;
   };
 
