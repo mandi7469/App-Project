@@ -94,28 +94,23 @@ export default function SignIn(props) {
     setFormData({ ...formData, [name]: value });
   };
 
-  const handleSubmit = (event) => {
-    event.preventDefault()
-    axios.get('/')
-  }
-
-  // const handleSubmit = async (event) => {
-  //   event.preventDefault();
-  //   const { email, password } = formData;
-  //   try {
-  //     const { formData } = await axios.post("/signin", {
-  //       email,
-  //       password,
-  //     });
-  //     if (emailError || passwordError) {
-  //     } else {
-  //       setFormData({});
-  //       navigate("/Dashboard");
-  //     }
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
+  const signinUser = async (event) => {
+    event.preventDefault();
+    const { email, password } = formData;
+    try {
+      const { formData } = await axios.post("/signin", {
+        email,
+        password,
+      });
+      if (emailError || passwordError) {
+      } else {
+        setFormData({});
+        navigate("/Dashboard");
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <div style={{ display: "flex", minHeight: "100vh" }}>
@@ -160,7 +155,7 @@ export default function SignIn(props) {
             </Typography>
             <Box
               component="form"
-              onSubmit={handleSubmit}
+              onSubmit={signinUser}
               noValidate
               sx={{
                 display: "flex",

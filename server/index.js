@@ -12,6 +12,10 @@ mongoose
   .then(() => console.log("Database connected"))
   .catch((err) => console.log("Database not connected", err));
 
+  // middleware
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
+
 // mounts the authentication route at the root path "/"
 app.use("/", require("./routes/authRoutes"));
 

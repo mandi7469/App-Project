@@ -86,9 +86,8 @@ export default function SignUp(props) {
       setNameError(false);
       setNameErrorMessage("");
     }
-
-// if isValid registerUser
-
+    // if (isValid) signupUser();
+    
     return isValid;
   };
 
@@ -97,7 +96,7 @@ export default function SignUp(props) {
     setFormData({ ...formData, [name]: value });
   };
 
-  const handleSubmit = async (event) => {
+  const signupUser = async (event) => {
     event.preventDefault();
     const { name, email, password } = formData;
     try {
@@ -106,7 +105,7 @@ export default function SignUp(props) {
         email,
         password,
       });
-      if (nameError || emailError || passwordError) {
+      if (formData || nameError || emailError || passwordError) {
       } else {
         setFormData({});
         navigate("/SignIn");
@@ -159,7 +158,7 @@ export default function SignUp(props) {
             </Typography>
             <Box
               component="form"
-              onSubmit={handleSubmit}
+              onSubmit={signupUser}
               sx={{ display: "flex", flexDirection: "column", gap: 2 }}
             >
               <FormControl>
