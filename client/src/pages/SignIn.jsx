@@ -102,7 +102,7 @@ export default function SignIn(props) {
         email,
         password,
       });
-      if (emailError || passwordError) {
+      if (formData || emailError || passwordError) {
       } else {
         setFormData({});
         navigate("/Dashboard");

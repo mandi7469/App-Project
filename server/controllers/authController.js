@@ -7,6 +7,7 @@ const test = (req, res) => {
   res.json("test is working");
 };
 
+// signup a new user
 const signupUser = async (req, res) => {
   try {
     const { name, email, password } = req.body;
@@ -45,8 +46,48 @@ const signupUser = async (req, res) => {
   }
 };
 
+// signin user
+const signinUser = async (req, res) => {
+  try {
+    const { email, password } = req.body;
+
+    // check if user exists
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res.json({
+        error: "No user found",
+      });
+    }
+
+    // check password match
+    const match = await comparePassword(password, user.password);
+    if(match) {
+      res.json("Passwords match")
+    }
+    // if (match) {
+    //   jwt.sign(
+    //     { email: user.email, id: user._id, name: user.name },
+    //     process.env.JWT_SECRET,
+    //     {},
+    //     (err, token) => {
+    //       if (err) throw err;
+    //       res.cookie("token", token).json(user);
+    //     }
+    //   );
+    // }
+    if (!match) {
+      res.json({
+        error: "Incorrect password",
+      });
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 // exports
 module.exports = {
   test,
   signupUser,
+  signinUser,
 };
