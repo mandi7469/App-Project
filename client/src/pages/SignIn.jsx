@@ -39,7 +39,7 @@ const Card = styled(MuiCard)(({ theme }) => ({
 
 export default function SignIn(props) {
   const navigate = useNavigate();
-  const [formData, setFormData] = useState({
+  const [data, setData] = useState({
     email: "",
     password: "",
   });
@@ -91,20 +91,20 @@ export default function SignIn(props) {
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
-    setFormData({ ...formData, [name]: value });
+    setData({ ...data, [name]: value });
   };
 
   const signinUser = async (event) => {
     event.preventDefault();
-    const { email, password } = formData;
+    const { email, password } = data;
     try {
-      const { formData } = await axios.post("/signin", {
+      const { data } = await axios.post("/signin", {
         email,
         password,
       });
-      if (formData || emailError || passwordError) {
+      if (emailError || passwordError) {
       } else {
-        setFormData({});
+        setData({});
         navigate("/Dashboard");
       }
     } catch (error) {
@@ -128,7 +128,7 @@ export default function SignIn(props) {
             >
               {" "}
             </ArrowBackIcon>
-            <Typography variant="caption" color="white">
+            <Typography variant="caption" color="white" sx={{pl: 1}}>
               Back to home
             </Typography>
           </IconButton>
@@ -172,12 +172,11 @@ export default function SignIn(props) {
                   id="email"
                   type="email"
                   name="email"
-                  value={formData.email}
+                  value={data.email}
                   onChange={handleInputChange}
                   placeholder="your@email.com"
                   autoComplete="email"
                   autoFocus
-                  required
                   fullWidth
                   variant="outlined"
                   color={emailError ? "error" : "primary"}
@@ -189,14 +188,13 @@ export default function SignIn(props) {
                   error={passwordError}
                   helperText={passwordErrorMessage}
                   name="password"
-                  value={formData.password}
+                  value={data.password}
                   onChange={handleInputChange}
                   placeholder="••••••"
                   type="password"
                   id="password"
                   autoComplete="current-password"
                   autoFocus
-                  required
                   fullWidth
                   variant="outlined"
                   color={passwordError ? "error" : "primary"}

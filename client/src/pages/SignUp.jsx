@@ -1,6 +1,7 @@
 import * as React from "react";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
+import { toast } from "react-hot-toast";
 import axios from "axios";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
@@ -15,6 +16,8 @@ import MuiCard from "@mui/material/Card";
 import { styled, alpha } from "@mui/material/styles";
 import IconButton from "@mui/material/IconButton";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import Snackbar from "@mui/material/Snackbar";
+import Alert from "@mui/material/Alert";
 
 const Card = styled(MuiCard)(({ theme }) => ({
   display: "flex",
@@ -36,7 +39,7 @@ const Card = styled(MuiCard)(({ theme }) => ({
 
 export default function SignUp(props) {
   const navigate = useNavigate();
-  const [formData, setFormData] = useState({
+  const [data, setData] = useState({
     name: "",
     email: "",
     password: "",
@@ -86,32 +89,40 @@ export default function SignUp(props) {
       setNameError(false);
       setNameErrorMessage("");
     }
-    // if (isValid) signupUser();
-    
+
     return isValid;
   };
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
-    setFormData({ ...formData, [name]: value });
+    setData({ ...data, [name]: value });
   };
 
   const signupUser = async (event) => {
     event.preventDefault();
-    const { name, email, password } = formData;
-    try {
-      const { formData } = await axios.post("/signup", {
-        name,
-        email,
-        password,
-      });
-      if (formData || nameError || emailError || passwordError) {
-      } else {
-        setFormData({});
-        navigate("/SignIn");
+    if (!nameError && !emailError && !passwordError) {
+      const { name, email, password } = data;
+      try {
+        const { data } = await axios.post("/signup", {
+          name,
+          email,
+          password,
+        });
+        if (data.error) {
+          if (data.error == "Email already exists, please try again.") {
+            setEmailError(true);
+            setEmailErrorMessage(data.error);
+          } else {
+            toast.error(data.error);
+          }
+        } else {
+          setData({});
+          toast.success("Sign up successful! Please sign in.");
+          navigate("/SignIn");
+        }
+      } catch (error) {
+        console.log(error);
       }
-    } catch (error) {
-      console.log(error);
     }
   };
 
@@ -131,7 +142,7 @@ export default function SignUp(props) {
             >
               {" "}
             </ArrowBackIcon>
-            <Typography variant="caption" color="white">
+            <Typography variant="caption" color="white" sx={{ pl: 1 }}>
               Back to home
             </Typography>
           </IconButton>
@@ -166,9 +177,8 @@ export default function SignUp(props) {
                 <TextField
                   autoComplete="name"
                   name="name"
-                  value={formData.name}
+                  value={data.name}
                   onChange={handleInputChange}
-                  required
                   fullWidth
                   id="name"
                   placeholder="Jon Snow"
@@ -180,12 +190,11 @@ export default function SignUp(props) {
               <FormControl>
                 <FormLabel htmlFor="email">Email</FormLabel>
                 <TextField
-                  required
                   fullWidth
                   id="email"
                   placeholder="your@email.com"
                   name="email"
-                  value={formData.email}
+                  value={data.email}
                   onChange={handleInputChange}
                   autoComplete="email"
                   variant="outlined"
@@ -197,10 +206,9 @@ export default function SignUp(props) {
               <FormControl>
                 <FormLabel htmlFor="password">Password</FormLabel>
                 <TextField
-                  required
                   fullWidth
                   name="password"
-                  value={formData.password}
+                  value={data.password}
                   onChange={handleInputChange}
                   placeholder="••••••"
                   type="password"
