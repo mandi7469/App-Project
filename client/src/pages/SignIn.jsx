@@ -70,7 +70,7 @@ export default function SignIn(props) {
 
     if (!email.value || !/\S+@\S+\.\S+/.test(email.value)) {
       setEmailError(true);
-      setEmailErrorMessage("Email not found.");
+      setEmailErrorMessage("Please enter a valid email address.");
       isValid = false;
     } else {
       setEmailError(false);
@@ -96,19 +96,27 @@ export default function SignIn(props) {
 
   const signinUser = async (event) => {
     event.preventDefault();
-    const { email, password } = data;
-    try {
-      const { data } = await axios.post("/signin", {
-        email,
-        password,
-      });
-      if (emailError || passwordError) {
-      } else {
-        setData({});
-        navigate("/Dashboard");
+    if (!emailError && !passwordError) {
+      const { email, password } = data;
+      try {
+        const { data } = await axios.post("/signin", {
+          email,
+          password,
+        });
+        if (data.error) {
+          if (data.error == "Incorrect password.") {
+            setPasswordError(true);
+            setPasswordErrorMessage(data.error);
+          } else {
+            toast.error(data.error);
+          }
+        } else {
+          setData({});
+          navigate("/Dashboard");
+        }
+      } catch (error) {
+        console.log(error);
       }
-    } catch (error) {
-      console.log(error);
     }
   };
 
@@ -128,7 +136,7 @@ export default function SignIn(props) {
             >
               {" "}
             </ArrowBackIcon>
-            <Typography variant="caption" color="white" sx={{pl: 1}}>
+            <Typography variant="caption" color="white" sx={{ pl: 1 }}>
               Back to home
             </Typography>
           </IconButton>

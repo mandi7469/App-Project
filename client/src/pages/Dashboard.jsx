@@ -1,3 +1,4 @@
+// imports
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
 import { useContext } from "react";
@@ -27,7 +28,7 @@ export default function Dashboard() {
             >
               {" "}
             </ArrowBackIcon>
-            <Typography variant="caption" color="white" sx={{pl: 1}}>
+            <Typography variant="caption" color="white" sx={{ pl: 1 }}>
               Logout
             </Typography>
           </IconButton>
@@ -43,7 +44,7 @@ export default function Dashboard() {
           }}
         >
           <h1 style={{ color: "white" }}>Dashboard</h1>
-
+          {/* access user data from the UserContext using useContext hook */}
           {!!user && <h2 style={{ color: "white" }}>Welcome {user.name}!</h2>}
         </Box>
       </Container>

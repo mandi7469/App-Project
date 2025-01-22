@@ -56,7 +56,7 @@ const signinUser = async (req, res) => {
     const user = await User.findOne({ email });
     if (!user) {
       return res.json({
-        error: "No user found",
+        error: "Email not found.",
       });
     }
 
@@ -75,7 +75,7 @@ const signinUser = async (req, res) => {
     }
     if (!match) {
       res.json({
-        error: "Incorrect password",
+        error: "Incorrect password.",
       });
     }
   } catch (error) {
