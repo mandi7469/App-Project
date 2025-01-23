@@ -91,6 +91,7 @@ export default function Dashboard() {
   const navigate = useNavigate();
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
+  const [openDialog, setOpenDialog] = React.useState(false);
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -101,11 +102,11 @@ export default function Dashboard() {
   };
 
   const handleClickOpen = () => {
-    setOpen(true);
+    setOpenDialog(true);
   };
 
   const handleClose = () => {
-    setOpen(false);
+    setOpenDialog(false);
   };
 
   return (
@@ -158,7 +159,7 @@ export default function Dashboard() {
           <Divider />
           <List>
             <ListItem disablePadding>
-              <ListItemButton >
+              <ListItemButton onClick={handleClickOpen}>
                 <ListItemIcon>
                   <LogoutIcon />
                 </ListItemIcon>
@@ -170,7 +171,7 @@ export default function Dashboard() {
         </Drawer>
         <Main open={open}>
           <DrawerHeader />
-          <LogoutDialog open={open} handleClose={handleClose} />
+          <LogoutDialog open={openDialog} handleClose={handleClose} />
           <Typography sx={{ marginBottom: 2, color: "white" }}>
             Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
             eiusmod tempor incididunt ut labore et dolore magna aliqua. Rhoncus
@@ -205,21 +206,4 @@ export default function Dashboard() {
       </Box>
     </div>
   );
-}
-
-{
-  /* <Box>
-  <IconButton onClick={handleHomeClick}>
-    <ArrowBackIcon
-      sx={{
-        color: "white",
-      }}
-    >
-      {" "}
-    </ArrowBackIcon>
-    <Typography variant="caption" color="white" sx={{ pl: 1 }}>
-      Logout
-    </Typography>
-  </IconButton>
-</Box>; */
 }

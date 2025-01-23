@@ -6,17 +6,11 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
-import useMediaQuery from "@mui/material/useMediaQuery";
-import { useTheme } from "@mui/material/styles";
 
 function LogoutDialog({ open, handleClose }) {
-  const theme = useTheme();
-  const fullScreen = useMediaQuery(theme.breakpoints.down("md"));
-
   return (
     <React.Fragment>
       <Dialog
-        fullScreen={fullScreen}
         open={open}
         onClose={handleClose}
         aria-labelledby="responsive-dialog-title"
@@ -26,8 +20,7 @@ function LogoutDialog({ open, handleClose }) {
         </DialogTitle>
         <DialogContent>
           <DialogContentText>
-            Are you sure you want to Logout? You will be returned to home
-            screen.
+            Are you sure you want to Logout?
           </DialogContentText>
         </DialogContent>
         <DialogActions>
