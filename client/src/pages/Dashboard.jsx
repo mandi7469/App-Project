@@ -17,13 +17,11 @@ import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
-import InboxIcon from "@mui/icons-material/MoveToInbox";
-import MailIcon from "@mui/icons-material/Mail";
+import LogoutIcon from "@mui/icons-material/Logout";
 import { useContext } from "react";
 import { UserContext } from "../../context/userContext";
-import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { useNavigate } from "react-router-dom";
-
+import LogoutDialog from "../components/LogoutDialog";
 const drawerWidth = 240;
 
 const Main = styled("main", { shouldForwardProp: (prop) => prop !== "open" })(
@@ -102,8 +100,12 @@ export default function Dashboard() {
     setOpen(false);
   };
 
-  const handleHomeClick = () => {
-    navigate("/");
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
   };
 
   return (
@@ -127,7 +129,7 @@ export default function Dashboard() {
               <MenuIcon />
             </IconButton>
             <Typography variant="h6" noWrap component="div">
-            {!!user && <>Welcome back {user.name}!</>}
+              {!!user && <>Welcome back {user.name}!</>}
             </Typography>
           </Toolbar>
         </AppBar>
@@ -155,33 +157,20 @@ export default function Dashboard() {
           </DrawerHeader>
           <Divider />
           <List>
-            {["Inbox", "Starred", "Send email", "Drafts"].map((text, index) => (
-              <ListItem key={text} disablePadding>
-                <ListItemButton>
-                  <ListItemIcon>
-                    {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-                  </ListItemIcon>
-                  <ListItemText primary={text} />
-                </ListItemButton>
-              </ListItem>
-            ))}
+            <ListItem disablePadding>
+              <ListItemButton >
+                <ListItemIcon>
+                  <LogoutIcon />
+                </ListItemIcon>
+                <ListItemText primary="Logout" />
+              </ListItemButton>
+            </ListItem>
           </List>
           <Divider />
-          <List>
-            {["All mail", "Trash", "Spam"].map((text, index) => (
-              <ListItem key={text} disablePadding>
-                <ListItemButton>
-                  <ListItemIcon>
-                    {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-                  </ListItemIcon>
-                  <ListItemText primary={text} />
-                </ListItemButton>
-              </ListItem>
-            ))}
-          </List>
         </Drawer>
         <Main open={open}>
           <DrawerHeader />
+          <LogoutDialog open={open} handleClose={handleClose} />
           <Typography sx={{ marginBottom: 2, color: "white" }}>
             Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
             eiusmod tempor incididunt ut labore et dolore magna aliqua. Rhoncus
@@ -232,21 +221,5 @@ export default function Dashboard() {
       Logout
     </Typography>
   </IconButton>
-</Box>; */
-}
-
-{
-  /* <Box
-  sx={{
-    flexGrow: 1,
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    flexDirection: "column",
-    px: 0,
-  }}
->
-  <h1 style={{ color: "white" }}>Dashboard</h1>
-  {!!user && <h2 style={{ color: "white" }}>Welcome back {user.name}!</h2>}
 </Box>; */
 }
