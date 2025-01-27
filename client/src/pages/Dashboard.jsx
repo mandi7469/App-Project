@@ -19,8 +19,11 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import LogoutIcon from "@mui/icons-material/Logout";
 import { useUserContext } from "../../utils/userContext";
-import { useNavigate } from "react-router-dom";
 import LogoutDialog from "../components/LogoutDialog";
+import { useNavigate } from "react-router-dom";
+import EditIcon from "@mui/icons-material/Edit";
+import EditDialog from "../components/EditDialog";
+
 const drawerWidth = 240;
 
 const Main = styled("main", { shouldForwardProp: (prop) => prop !== "open" })(
@@ -86,12 +89,20 @@ const DrawerHeader = styled("div")(({ theme }) => ({
 }));
 
 export default function Dashboard() {
+  const navigate = useNavigate();
   const [state, dispatch] = useUserContext();
   const { user } = state;
-  const navigate = useNavigate();
+
+  React.useEffect(() => {
+    if (!user) {
+      navigate("/");
+    }
+  }, []);
+
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
   const [openDialog, setOpenDialog] = React.useState(false);
+  const [openEditDialog, setOpenEditDialog] = React.useState(false);
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -107,6 +118,14 @@ export default function Dashboard() {
 
   const handleClose = () => {
     setOpenDialog(false);
+  };
+
+  const handleEditClickOpen = () => {
+    setOpenEditDialog(true);
+  };
+
+  const handleEditClose = () => {
+    setOpenEditDialog(false);
   };
 
   return (
@@ -166,12 +185,21 @@ export default function Dashboard() {
                 <ListItemText primary="Logout" />
               </ListItemButton>
             </ListItem>
+            <ListItem disablePadding>
+              <ListItemButton onClick={handleEditClickOpen}>
+                <ListItemIcon>
+                  <EditIcon />
+                </ListItemIcon>
+                <ListItemText primary="Edit" />
+              </ListItemButton>
+            </ListItem>
           </List>
           <Divider />
         </Drawer>
+        <LogoutDialog open={openDialog} handleClose={handleClose} />
         <Main open={open}>
           <DrawerHeader />
-          <LogoutDialog open={openDialog} handleClose={handleClose} />
+          <EditDialog open={openEditDialog} handleClose={handleEditClose} />
           <Typography sx={{ marginBottom: 2, color: "white" }}>
             Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
             eiusmod tempor incididunt ut labore et dolore magna aliqua. Rhoncus

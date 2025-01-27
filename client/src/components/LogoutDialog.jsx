@@ -6,8 +6,22 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
+import { useNavigate } from "react-router-dom";
+import { useUserContext } from "../../utils/userContext";
+import { DO_LOGOUT } from "../../utils/actions";
+
+
 
 function LogoutDialog({ open, handleClose }) {
+  const [state, dispatch] = useUserContext();
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    dispatch({
+      type: DO_LOGOUT,
+    });
+    navigate("/")
+  };
   return (
     <React.Fragment>
       <Dialog
@@ -27,7 +41,7 @@ function LogoutDialog({ open, handleClose }) {
           <Button autoFocus onClick={handleClose}>
             Cancel
           </Button>
-          <Button variant="contained" onClick={handleClose} autoFocus>
+          <Button variant="contained" onClick={handleLogout} autoFocus>
             Confirm
           </Button>
         </DialogActions>
