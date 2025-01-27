@@ -18,8 +18,7 @@ import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import LogoutIcon from "@mui/icons-material/Logout";
-import { useContext } from "react";
-import { UserContext } from "../../context/userContext";
+import { useUserContext } from "../../utils/userContext";
 import { useNavigate } from "react-router-dom";
 import LogoutDialog from "../components/LogoutDialog";
 const drawerWidth = 240;
@@ -87,7 +86,8 @@ const DrawerHeader = styled("div")(({ theme }) => ({
 }));
 
 export default function Dashboard() {
-  const { user } = useContext(UserContext);
+  const [state, dispatch] = useUserContext();
+  const { user } = state;
   const navigate = useNavigate();
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);

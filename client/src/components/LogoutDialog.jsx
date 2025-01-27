@@ -36,7 +36,7 @@ function LogoutDialog({ open, handleClose }) {
   );
 }
 
-LogoutDialog.PropTypes = {
+LogoutDialog.propTypes = {
   handleClose: PropTypes.func.isRequired,
   open: PropTypes.bool.isRequired,
 };

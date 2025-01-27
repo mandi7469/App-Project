@@ -18,6 +18,9 @@ import { styled, alpha } from "@mui/material/styles";
 import ForgotPassword from "../components/ForgotPassword";
 import IconButton from "@mui/material/IconButton";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import { useUserContext } from "../../utils/userContext";
+import { toast } from "react-hot-toast";
+import { DO_SIGNIN } from "../../utils/actions";
 
 const Card = styled(MuiCard)(({ theme }) => ({
   display: "flex",
@@ -39,6 +42,7 @@ const Card = styled(MuiCard)(({ theme }) => ({
 
 export default function SignIn(props) {
   const navigate = useNavigate();
+  const [state, dispatch] = useUserContext();
   const [data, setData] = useState({
     email: "",
     password: "",
@@ -99,20 +103,47 @@ export default function SignIn(props) {
     if (!emailError && !passwordError) {
       const { email, password } = data;
       try {
-        const { data } = await axios.post("/signin", {
-          email,
-          password,
-        });
-        if (data.error) {
-          if (data.error == "Incorrect password.") {
+
+        const [loginResponse, profileResponse] = await Promise.all([
+          axios.post("/signin", {
+            email,
+            password,
+          }),
+          axios.get("/profile")
+        ]);
+
+    
+        if(loginResponse.status = 200) {
+          let loginData = loginResponse.data
+          let profileName = ""
+
+          if(profileResponse.data){
+              if(profileResponse.data.name){
+                profileName = profileResponse.data.name
+              }
+          }
+
+        if (loginData.error) {
+          if (loginData.error == "Incorrect password.") {
             setPasswordError(true);
-            setPasswordErrorMessage(data.error);
+            setPasswordErrorMessage(loginData.error);
           } else {
-            toast.error(data.error);
+            toast.error(loginData.error);
           }
         } else {
           setData({});
+
+            dispatch({
+              type: DO_SIGNIN,
+              name: profileName
+            });
+          
+        
           navigate("/Dashboard");
+        }
+
+        } else {
+          toast.error("Network Error");
         }
       } catch (error) {
         console.log(error);
