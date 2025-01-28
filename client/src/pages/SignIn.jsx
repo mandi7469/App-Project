@@ -103,45 +103,41 @@ export default function SignIn(props) {
     if (!emailError && !passwordError) {
       const { email, password } = data;
       try {
-
         const [loginResponse, profileResponse] = await Promise.all([
           axios.post("/signin", {
             email,
             password,
           }),
-          axios.get("/profile")
+          axios.get("/profile"),
         ]);
 
-    
-        if(loginResponse.status = 200) {
-          let loginData = loginResponse.data
-          let profileName = ""
+        if ((loginResponse.status = 200)) {
+          let loginData = loginResponse.data;
+          let profileName = "";
 
-          if(profileResponse.data){
-              if(profileResponse.data.name){
-                profileName = profileResponse.data.name
-              }
+          if (profileResponse.data) {
+            if (profileResponse.data.name) {
+              profileName = profileResponse.data.name;
+            }
           }
 
-        if (loginData.error) {
-          if (loginData.error == "Incorrect password.") {
-            setPasswordError(true);
-            setPasswordErrorMessage(loginData.error);
+          if (loginData.error) {
+            if (loginData.error == "Incorrect password.") {
+              setPasswordError(true);
+              setPasswordErrorMessage(loginData.error);
+            } else {
+              toast.error(loginData.error);
+            }
           } else {
-            toast.error(loginData.error);
-          }
-        } else {
-          setData({});
+            setData({});
 
             dispatch({
               type: DO_SIGNIN,
-              name: profileName
+              name: profileName,
             });
-          
-        
-          navigate("/Dashboard");
-        }
 
+            navigate("/Dashboard");
+          }
         } else {
           toast.error("Network Error");
         }
