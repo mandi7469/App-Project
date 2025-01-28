@@ -8,7 +8,7 @@ import MuiAppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 import List from "@mui/material/List";
 import Typography from "@mui/material/Typography";
-import Divider from "@mui/material/Divider";
+import Divider, { dividerClasses } from "@mui/material/Divider";
 import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
@@ -23,6 +23,10 @@ import LogoutDialog from "../components/LogoutDialog";
 import { useNavigate } from "react-router-dom";
 import EditIcon from "@mui/icons-material/Edit";
 import EditDialog from "../components/EditDialog";
+import DeleteIcon from "@mui/icons-material/Delete";
+import DeleteDialog from "../components/DeleteDialog";
+import AddIcon from "@mui/icons-material/Add";
+import AddDialog from "../components/AddDialog";
 
 const drawerWidth = 240;
 
@@ -102,7 +106,9 @@ export default function Dashboard() {
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
   const [openDialog, setOpenDialog] = React.useState(false);
+  const [openAddDialog, setOpenAddDialog] = React.useState(false);
   const [openEditDialog, setOpenEditDialog] = React.useState(false);
+  const [openDeleteDialog, setOpenDeleteDialog] = React.useState(false);
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -119,6 +125,13 @@ export default function Dashboard() {
   const handleClose = () => {
     setOpenDialog(false);
   };
+  const handleAddClickOpen = () => {
+    setOpenAddDialog(true);
+  };
+
+  const handleAddClose = () => {
+    setOpenAddDialog(false);
+  };
 
   const handleEditClickOpen = () => {
     setOpenEditDialog(true);
@@ -126,6 +139,14 @@ export default function Dashboard() {
 
   const handleEditClose = () => {
     setOpenEditDialog(false);
+  };
+
+  const handleDeleteClickOpen = () => {
+    setOpenDeleteDialog(true);
+  };
+
+  const handleDeleteClose = () => {
+    setOpenDeleteDialog(false);
   };
 
   return (
@@ -186,11 +207,27 @@ export default function Dashboard() {
               </ListItemButton>
             </ListItem>
             <ListItem disablePadding>
+              <ListItemButton onClick={handleAddClickOpen}>
+                <ListItemIcon>
+                  <AddIcon />
+                </ListItemIcon>
+                <ListItemText primary="Add Entry" />
+              </ListItemButton>
+            </ListItem>
+            <ListItem disablePadding>
               <ListItemButton onClick={handleEditClickOpen}>
                 <ListItemIcon>
                   <EditIcon />
                 </ListItemIcon>
                 <ListItemText primary="Edit" />
+              </ListItemButton>
+            </ListItem>
+            <ListItem disablePadding>
+              <ListItemButton onClick={handleDeleteClickOpen}>
+                <ListItemIcon>
+                  <DeleteIcon />
+                </ListItemIcon>
+                <ListItemText primary="Delete" />
               </ListItemButton>
             </ListItem>
           </List>
@@ -199,10 +236,29 @@ export default function Dashboard() {
         <LogoutDialog open={openDialog} handleClose={handleClose} />
         <Main open={open}>
           <DrawerHeader />
+          <AddDialog open={openAddDialog} handleClose={handleAddClose} />
           <EditDialog open={openEditDialog} handleClose={handleEditClose} />
-          <Typography sx={{ marginBottom: 2, color: "white" }}>
-            {userEntry}
-          </Typography>
+          <List>
+            {userEntry.map((entry) => (
+              <ListItem>
+                <ListItemText>
+                  <Typography sx={{ marginBottom: 2, color: "white" }}>
+                    {entry}
+                    <Divider
+                      orientation="horizontal"
+                      variant="fullWidth"
+                      flexItem
+                      sx={{ color: "white", border: "1px solid", marginTop: 2 }}
+                    />
+                  </Typography>
+                </ListItemText>
+              </ListItem>
+            ))}
+          </List>
+          <DeleteDialog
+            open={openDeleteDialog}
+            handleClose={handleDeleteClose}
+          />
         </Main>
       </Box>
     </div>

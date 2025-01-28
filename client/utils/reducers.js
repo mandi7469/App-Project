@@ -1,4 +1,9 @@
-import { DO_SIGNIN, DO_LOGOUT, UPDATE_EDIT_TEXT } from "./actions";
+import {
+  DO_SIGNIN,
+  DO_LOGOUT,
+  UPDATE_EDIT_TEXT,
+  DELETE_ENTRY,
+} from "./actions";
 
 export const reducer = (state, action) => {
   switch (action.type) {
@@ -9,13 +14,17 @@ export const reducer = (state, action) => {
           name: action.name,
           authenticated: true,
         },
-        userEntry:
-          "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed doeiusmod tempor incididunt ut labore et dolore magna aliqua. Rhoncusdolor purus non enim praesent elementum facilisis leo vel. Risus at ultrices mi tempus imperdiet. Semper risus in hendrerit gravida rutrum quisque non tellus. Convallis convallis tellus id interdum velit laoreet id donec ultrices. Odio morbi quis commodo odio aenean sed adipiscing. Amet nisl suscipit adipiscing bibendum est ultricies integer quis. Cursus euismod quis viverra nibh cras. Metus vulputate eu scelerisque felis imperdiet proin fermentum leo. Mauris commodo quis imperdiet massa tincidunt. Cras tincidunt lobortis feugiat vivamus at augue. At augue eget arcu dictum varius duis at consectetur lorem. Velit sed ullamcorper morbi tincidunt. Lorem donec massa sapien faucibus et molestie ac.",
+        userEntry: ["test" ,"test2", "test3"]
       };
     case UPDATE_EDIT_TEXT:
       return {
         ...state,
         userEntry: action.userEntry,
+      };
+    case DELETE_ENTRY:
+      return {
+        ...state,
+        userEntry: "",
       };
     case DO_LOGOUT:
       return {

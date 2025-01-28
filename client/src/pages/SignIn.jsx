@@ -41,6 +41,16 @@ const Card = styled(MuiCard)(({ theme }) => ({
 }));
 
 export default function SignIn(props) {
+  // Remove
+  // let entries = ["test", "test2", "test3"]
+  // for (let index = 0; index < entries.length; index++) {
+
+  //   console.log(entries[index])
+  // }
+  // entries.map((item) => {
+  //   console.log(item)
+  // })
+
   const navigate = useNavigate();
   const [state, dispatch] = useUserContext();
   const [data, setData] = useState({

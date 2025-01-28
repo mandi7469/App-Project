@@ -6,19 +6,17 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
-import { useNavigate } from "react-router-dom";
 import { useUserContext } from "../../utils/userContext";
-import { DO_LOGOUT } from "../../utils/actions";
+import { DELETE_ENTRY } from "../../utils/actions";
 
-function LogoutDialog({ open, handleClose }) {
+function DeleteDialog({ open, handleClose }) {
   const [state, dispatch] = useUserContext();
-  const navigate = useNavigate();
 
-  const handleLogout = () => {
+  const handleDelete = () => {
     dispatch({
-      type: DO_LOGOUT,
+      type: DELETE_ENTRY,
     });
-    navigate("/");
+    handleClose();
   };
   return (
     <React.Fragment>
@@ -27,20 +25,18 @@ function LogoutDialog({ open, handleClose }) {
         onClose={handleClose}
         aria-labelledby="responsive-dialog-title"
       >
-        <DialogTitle id="responsive-dialog-title">
-          {"Logout Confirmation"}
-        </DialogTitle>
+        <DialogTitle id="responsive-dialog-title">{"Delete Entry"}</DialogTitle>
         <DialogContent>
           <DialogContentText>
-            Are you sure you want to Logout?
+            Are you sure you want to delete this entry?
           </DialogContentText>
         </DialogContent>
         <DialogActions>
           <Button autoFocus onClick={handleClose}>
             Cancel
           </Button>
-          <Button variant="contained" onClick={handleLogout} autoFocus>
-            Confirm
+          <Button variant="contained" onClick={handleDelete} autoFocus>
+            Delete
           </Button>
         </DialogActions>
       </Dialog>
@@ -48,9 +44,9 @@ function LogoutDialog({ open, handleClose }) {
   );
 }
 
-LogoutDialog.propTypes = {
+DeleteDialog.propTypes = {
   handleClose: PropTypes.func.isRequired,
   open: PropTypes.bool.isRequired,
 };
 
-export default LogoutDialog;
+export default DeleteDialog;
